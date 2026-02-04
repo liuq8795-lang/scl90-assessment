@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>配图生成</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', sans-serif;
+            background: #000;
+            color: #fff;
+            padding: 40px;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .poster {
+            background: linear-gradient(135deg, #1d1d1f 0%, #2d2d2f 100%);
+            border-radius: 32px;
+            padding: 48px;
+            margin-bottom: 60px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .poster::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(41, 151, 255, 0.1) 0%, transparent 70%);
+            animation: rotate 30s linear infinite;
+        }
+        
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .poster-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .badge {
+            display: inline-block;
+            background: rgba(41, 151, 255, 0.2);
+            color: #2997ff;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        
+        h1 {
+            font-size: 56px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 0%, #86868b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .subtitle {
+            font-size: 24px;
+            color: #86868b;
+            margin-bottom: 40px;
+        }
+        
+        .score-card {
+            background: linear-gradient(135deg, #2997ff 0%, #a855f7 50%, #ec4899 100%);
+            border-radius: 24px;
+            padding: 40px;
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .score-label {
+            font-size: 18px;
+            opacity: 0.9;
+            margin-bottom: 8px;
+        }
+        
+        .score-value {
+            font-size: 80px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+        
+        .score-level {
+            font-size: 20px;
+            padding: 8px 24px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 20px;
+            display: inline-block;
+        }
+        
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        
+        .dimension-item {
+            background: rgba(255,255,255,0.05);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .dimension-icon {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+        
+        .dimension-name {
+            font-size: 14px;
+            color: #86868b;
+            margin-bottom: 4px;
+        }
+        
+        .dimension-score {
+            font-size: 20px;
+            font-weight: 600;
+        }
+        
+        .footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .price {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2997ff;
+        }
+        
+        .price-label {
+            font-size: 14px;
+            color: #86868b;
+        }
+        
+        .brand {
+            font-size: 14px;
+            color: #86868b;
+        }
+        
+        /* 第二张海报 */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .feature-card {
+            background: rgba(255,255,255,0.05);
+            border-radius: 24px;
+            padding: 32px;
+            text-align: center;
+        }
+        
+        .feature-icon {
+            width: 72px;
+            height: 72px;
+            background: linear-gradient(135deg, #2997ff 0%, #a855f7 100%);
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 16px;
+            font-size: 32px;
+        }
+        
+        .feature-card h3 {
+            font-size: 20px;
+            margin-bottom: 8px;
+        }
+        
+        .feature-card p {
+            font-size: 14px;
+            color: #86868b;
+            line-height: 1.6;
+        }
+        
+        .poster-title {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
+        .poster-title h2 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .poster-title p {
+            color: #86868b;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- 第一张图：测评结果 -->
+        <div class="poster">
+            <div class="poster-content">
+                <div class="badge">心理健康测评报告</div>
+                <h1>SCL-90</h1>
+                <p class="subtitle">症状自评量表</p>
+                
+                <div class="score-card">
+                    <div class="score-label">您的总均分</div>
+                    <div class="score-value">1.85</div>
+                    <div class="score-level">正常范围</div>
+                </div>
+                
+                <div class="dimensions-grid">
+                    <div class="dimension-item">
+                        <div class="dimension-icon">🤕</div>
+                        <div class="dimension-name">躯体化</div>
+                        <div class="dimension-score" style="color: #22c55e;">1.5</div>
+                    </div>
+                    <div class="dimension-item">
+                        <div class="dimension-icon">🔄</div>
+                        <div class="dimension-name">强迫症状</div>
+                        <div class="dimension-score" style="color: #22c55e;">2.0</div>
+                    </div>
+                    <div class="dimension-item">
+                        <div class="dimension-icon">👥</div>
+                        <div class="dimension-name">人际关系</div>
+                        <div class="dimension-score" style="color: #22c55e;">1.8</div>
+                    </div>
+                    <div class="dimension-item">
+                        <div class="dimension-icon">😔</div>
+                        <div class="dimension-name">抑郁</div>
+                        <div class="dimension-score" style="color: #22c55e;">1.6</div>
+                    </div>
+                    <div class="dimension-item">
+                        <div class="dimension-icon">😰</div>
+                        <div class="dimension-name">焦虑</div>
+                        <div class="dimension-score" style="color: #22c55e;">1.7</div>
+                    </div>
+                    <div class="dimension-item">
+                        <div class="dimension-icon">😠</div>
+                        <div class="dimension-name">敌对</div>
+                        <div class="dimension-score" style="color: #22c55e;">1.9</div>
+                    </div>
+                </div>
+                
+                <div class="footer">
+                    <div>
+                        <div class="price-label">限时优惠价</div>
+                        <div class="price">¥9.9</div>
+                    </div>
+                    <div class="brand">SCL-90 专业心理测评</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 第二张图：9个维度 -->
+        <div class="poster">
+            <div class="poster-content">
+                <div class="poster-title">
+                    <h2>9维度全面评估</h2>
+                    <p>国际通用的专业心理健康测评工具</p>
+                </div>
+                
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-icon">🤕</div>
+                        <h3>躯体化</h3>
+                        <p>身体不适症状评估</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🔄</div>
+                        <h3>强迫症状</h3>
+                        <p>强迫思维和行为</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">👥</div>
+                        <h3>人际关系</h3>
+                        <p>社交敏感程度</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">😔</div>
+                        <h3>抑郁</h3>
+                        <p>情绪低落评估</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">😰</div>
+                        <h3>焦虑</h3>
+                        <p>紧张焦虑程度</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">😠</div>
+                        <h3>敌对</h3>
+                        <p>敌对情绪评估</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">😨</div>
+                        <h3>恐怖</h3>
+                        <p>恐惧焦虑程度</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🤔</div>
+                        <h3>偏执</h3>
+                        <p>偏执思维程度</p>
+                    </div>
+                    <div class="feature-card">
+                        <div class="feature-icon">🌀</div>
+                        <h3>精神病性</h3>
+                        <p>严重心理症状</p>
+                    </div>
+                </div>
+                
+                <div class="footer" style="margin-top: 40px; justify-content: center;">
+                    <div class="price-label">限时优惠价</div>
+                    <div class="price" style="margin-left: 12px;">¥9.9</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
