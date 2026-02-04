@@ -1,0 +1,1273 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SCL-90 心理健康测评</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        :root {
+            --bg-primary: #000000;
+            --bg-secondary: #1d1d1f;
+            --bg-tertiary: #2d2d2f;
+            --text-primary: #f5f5f7;
+            --text-secondary: #86868b;
+            --accent: #2997ff;
+            --accent-hover: #0071e3;
+            --border: #424245;
+            --card-bg: #1d1d1f;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'SF Pro Text', 'Helvetica Neue', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.5;
+        }
+        
+        /* 导航栏 */
+        .nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 48px;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: saturate(180%) blur(20px);
+            -webkit-backdrop-filter: saturate(180%) blur(20px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .nav-content {
+            max-width: 1000px;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 22px;
+        }
+        
+        .nav-logo {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--text-primary);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            gap: 32px;
+        }
+        
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 12px;
+            transition: color 0.3s;
+        }
+        
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+        
+        /* 主要内容区 */
+        .main {
+            padding-top: 80px;
+        }
+        
+        /* Hero Section */
+        .hero {
+            text-align: center;
+            padding: 120px 24px 80px;
+            max-width: 980px;
+            margin: 0 auto;
+        }
+        
+        .hero-badge {
+            display: inline-block;
+            background: var(--bg-tertiary);
+            color: var(--accent);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        
+        .hero h1 {
+            font-size: 80px;
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -0.02em;
+        }
+        
+        .hero-subtitle {
+            font-size: 28px;
+            font-weight: 400;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+        }
+        
+        .hero-desc {
+            font-size: 21px;
+            color: var(--text-secondary);
+            max-width: 600px;
+            margin: 0 auto 48px;
+            line-height: 1.6;
+        }
+        
+        .hero-cta {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        
+        /* 按钮样式 */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 12px 24px;
+            border-radius: 980px;
+            font-size: 17px;
+            font-weight: 400;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+            border: none;
+        }
+        
+        .btn-primary {
+            background: var(--accent);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: var(--accent-hover);
+        }
+        
+        .btn-secondary {
+            background: transparent;
+            color: var(--accent);
+        }
+        
+        .btn-secondary:hover {
+            text-decoration: underline;
+        }
+        
+        /* 功能卡片区 */
+        .features {
+            padding: 120px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-header {
+            text-align: center;
+            margin-bottom: 80px;
+        }
+        
+        .section-header h2 {
+            font-size: 56px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            letter-spacing: -0.005em;
+        }
+        
+        .section-header p {
+            font-size: 24px;
+            color: var(--text-secondary);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+        }
+        
+        .feature-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 48px 40px;
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+        }
+        
+        .feature-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 24px;
+            font-size: 36px;
+        }
+        
+        .feature-card h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+        
+        .feature-card p {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.6;
+        }
+        
+        /* 登录/注册表单 */
+        .auth-section {
+            padding: 120px 24px;
+            max-width: 440px;
+            margin: 0 auto;
+        }
+        
+        .auth-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 48px 40px;
+        }
+        
+        .auth-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .auth-header h2 {
+            font-size: 40px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .auth-header p {
+            color: var(--text-secondary);
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-secondary);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 14px 16px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            font-size: 17px;
+            color: var(--text-primary);
+            transition: border-color 0.3s;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+        
+        .form-group input::placeholder {
+            color: var(--text-secondary);
+        }
+        
+        .auth-form .btn {
+            width: 100%;
+            justify-content: center;
+            margin-top: 8px;
+        }
+        
+        .auth-switch {
+            text-align: center;
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .auth-switch a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .auth-switch a:hover {
+            text-decoration: underline;
+        }
+        
+        /* 隐私声明 */
+        .privacy-notice {
+            background: var(--bg-tertiary);
+            border-radius: 16px;
+            padding: 24px;
+            margin-top: 24px;
+            font-size: 14px;
+            color: var(--text-secondary);
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .privacy-notice svg {
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+        
+        /* 测评区域 */
+        .assessment-section {
+            display: none;
+            padding: 120px 24px 80px;
+        }
+        
+        .assessment-progress {
+            max-width: 800px;
+            margin: 0 auto 48px;
+        }
+        
+        .progress-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .progress-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .progress-percent {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--accent);
+        }
+        
+        .progress-bar {
+            height: 6px;
+            background: var(--bg-tertiary);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--accent);
+            border-radius: 3px;
+            transition: width 0.5s ease;
+        }
+        
+        .question-card {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .question-group {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 48px 40px;
+            margin-bottom: 24px;
+        }
+        
+        .question-item {
+            padding: 24px 0;
+            border-bottom: 1px solid var(--border);
+        }
+        
+        .question-item:last-child {
+            border-bottom: none;
+        }
+        
+        .question-header {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 16px;
+        }
+        
+        .question-number {
+            width: 36px;
+            height: 36px;
+            background: var(--accent);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+        
+        .question-text {
+            font-size: 21px;
+            font-weight: 500;
+        }
+        
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 12px;
+            margin-left: 52px;
+        }
+        
+        .option-btn {
+            padding: 16px 12px;
+            background: var(--bg-tertiary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+        
+        .option-btn:hover {
+            border-color: var(--accent);
+        }
+        
+        .option-btn.selected {
+            background: var(--accent);
+            border-color: var(--accent);
+            color: white;
+        }
+        
+        .option-label {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+        
+        .option-desc {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+        
+        .option-btn.selected .option-desc {
+            color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .nav-buttons {
+            display: flex;
+            gap: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .nav-buttons .btn {
+            flex: 1;
+            justify-content: center;
+        }
+        
+        /* 结果区域 */
+        .result-section {
+            display: none;
+            padding: 120px 24px 80px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        
+        .result-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 64px 48px;
+            text-align: center;
+            margin-bottom: 32px;
+        }
+        
+        .result-label {
+            font-size: 17px;
+            color: var(--text-secondary);
+            margin-bottom: 16px;
+        }
+        
+        .result-score {
+            font-size: 120px;
+            font-weight: 700;
+            line-height: 1;
+            background: linear-gradient(135deg, var(--accent), #a855f7, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 24px;
+        }
+        
+        .result-level {
+            display: inline-block;
+            padding: 12px 32px;
+            background: var(--bg-tertiary);
+            border-radius: 24px;
+            font-size: 21px;
+            font-weight: 500;
+        }
+        
+        .dimensions-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 48px 40px;
+            margin-bottom: 32px;
+        }
+        
+        .dimensions-card h3 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 32px;
+            text-align: center;
+        }
+        
+        .dimensions-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .dimension-item {
+            background: var(--bg-tertiary);
+            border-radius: 16px;
+            padding: 24px;
+            text-align: center;
+        }
+        
+        .dimension-icon {
+            width: 48px;
+            height: 48px;
+            background: linear-gradient(135deg, var(--accent), #a855f7);
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 12px;
+            font-size: 24px;
+        }
+        
+        .dimension-name {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+        
+        .dimension-score {
+            font-size: 28px;
+            font-weight: 600;
+        }
+        
+        .interpretation-card {
+            background: var(--card-bg);
+            border-radius: 24px;
+            padding: 40px;
+            margin-bottom: 32px;
+        }
+        
+        .interpretation-card h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .interpretation-card p, .interpretation-card li {
+            font-size: 16px;
+            color: var(--text-secondary);
+            line-height: 1.8;
+        }
+        
+        .interpretation-card ul {
+            margin-left: 20px;
+            margin-top: 12px;
+        }
+        
+        .interpretation-card li {
+            margin-bottom: 8px;
+        }
+        
+        .result-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .result-actions .btn {
+            justify-content: center;
+        }
+        
+        /* 历史记录 */
+        .history-section {
+            margin-top: 48px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .history-section h3 {
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+        
+        .history-item {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 20px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+        
+        .history-date {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        
+        .history-score {
+            font-size: 18px;
+            font-weight: 600;
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+        
+        .score-normal { background: rgba(34, 197, 94, 0.2); color: #22c55e; }
+        .score-mild { background: rgba(251, 191, 36, 0.2); color: #fbbf24; }
+        .score-moderate { background: rgba(249, 115, 22, 0.2); color: #f97316; }
+        .score-severe { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+        
+        /* 退出按钮 */
+        .logout-btn {
+            position: fixed;
+            top: 60px;
+            right: 24px;
+            background: var(--bg-tertiary);
+            color: var(--text-primary);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 13px;
+            border: none;
+            cursor: pointer;
+            transition: background 0.3s;
+            z-index: 999;
+        }
+        
+        .logout-btn:hover {
+            background: var(--border);
+        }
+        
+        /* 提示信息 */
+        .message {
+            padding: 14px 18px;
+            border-radius: 12px;
+            margin-bottom: 20px;
+            font-size: 14px;
+            display: none;
+        }
+        
+        .message-error {
+            background: rgba(239, 68, 68, 0.2);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+        }
+        
+        .message-success {
+            background: rgba(34, 197, 94, 0.2);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.3);
+        }
+        
+        /* 响应式 */
+        @media (max-width: 1024px) {
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .dimensions-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 48px;
+            }
+            
+            .hero-subtitle {
+                font-size: 22px;
+            }
+            
+            .section-header h2 {
+                font-size: 40px;
+            }
+            
+            .features-grid, .dimensions-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-score {
+                font-size: 80px;
+            }
+            
+            .options-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+            
+            .nav-links {
+                display: none;
+            }
+            
+            .auth-card, .question-group, .result-card, .dimensions-card {
+                padding: 32px 24px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- 导航栏 -->
+    <nav class="nav">
+        <div class="nav-content">
+            <a href="#" class="nav-logo" onclick="goHome()">🧠 SCL-90</a>
+            <div class="nav-links">
+                <a href="#" onclick="showHome()">首页</a>
+                <a href="#" onclick="showFeatures()">功能</a>
+                <a href="#" id="authLink" onclick="showAuth()">登录</a>
+            </div>
+        </div>
+    </nav>
+    
+    <button class="logout-btn" id="logoutBtn" style="display: none;" onclick="logout()">退出</button>
+    
+    <!-- 主要内容区 -->
+    <main class="main">
+        <!-- 首页 -->
+        <section class="hero" id="homeSection">
+            <div class="hero-badge">专业心理健康评估</div>
+            <h1>SCL-90</h1>
+            <p class="hero-subtitle">症状自评量表</p>
+            <p class="hero-desc">国际通用的专业心理健康测评工具，从9个维度全面评估您的心理状态。</p>
+            <div class="hero-cta">
+                <button class="btn btn-primary" onclick="startAssessment()">
+                    开始测评
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </button>
+                <button class="btn btn-secondary" onclick="showAuth()">
+                    登录管理记录
+                </button>
+            </div>
+        </section>
+        
+        <!-- 功能介绍 -->
+        <section class="features" id="featuresSection">
+            <div class="section-header">
+                <h2>专业评估</h2>
+                <p>科学、全面、专业的心理健康测评</p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">📊</div>
+                    <h3>9维评估</h3>
+                    <p>涵盖躯体化、强迫、人际关系、抑郁、焦虑等9个核心心理维度</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🔒</div>
+                    <h3>隐私安全</h3>
+                    <p>数据加密存储，仅本人和授权管理员可查看</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">💾</div>
+                    <h3>历史记录</h3>
+                    <p>随时查看历史测评结果，了解心理健康变化趋势</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 登录/注册 -->
+        <section class="auth-section" id="authSection" style="display: none;">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2 id="authTitle">登录</h2>
+                    <p id="authSubtitle">使用您的账号</p>
+                </div>
+                
+                <div class="message message-error" id="authMessage"></div>
+                <div class="message message-success" id="authSuccess"></div>
+                
+                <form class="auth-form" id="authForm" onsubmit="handleAuth(event)">
+                    <div class="form-group" id="emailGroup" style="display: none;">
+                        <label>邮箱</label>
+                        <input type="email" id="authEmail" placeholder="请输入邮箱">
+                    </div>
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input type="text" id="authUsername" placeholder="请输入用户名" required>
+                    </div>
+                    <div class="form-group">
+                        <label id="passwordLabel">密码</label>
+                        <input type="password" id="authPassword" placeholder="请输入密码" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary" id="authSubmitBtn">登录</button>
+                </form>
+                
+                <p class="auth-switch" id="authSwitch">
+                    <span id="authSwitchText">还没有账号？</span>
+                    <a href="#" onclick="toggleAuthMode()"><span id="authSwitchLink">立即注册</span></a>
+                </p>
+                
+                <div class="privacy-notice">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+                        <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+                    </svg>
+                    <span>您的数据受到加密保护，仅用于心理健康评估目的</span>
+                </div>
+            </div>
+        </section>
+        
+        <!-- 测评区域 -->
+        <section class="assessment-section" id="assessmentSection">
+            <div class="assessment-progress">
+                <div class="progress-header">
+                    <span class="progress-label">测评进度</span>
+                    <span class="progress-percent" id="progressPercent">0%</span>
+                </div>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="progressFill" style="width: 0%"></div>
+                </div>
+            </div>
+            
+            <div class="question-card" id="questionsContainer"></div>
+            
+            <div class="nav-buttons">
+                <button class="btn btn-secondary" id="prevBtn" onclick="prevQuestion()">上一组</button>
+                <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()">下一组</button>
+            </div>
+        </section>
+        
+        <!-- 结果区域 -->
+        <section class="result-section" id="resultSection">
+            <div class="result-card">
+                <div class="result-label">您的总均分</div>
+                <div class="result-score" id="totalScore">0.00</div>
+                <div class="result-level" id="scoreLevel">评估中</div>
+            </div>
+            
+            <div class="dimensions-card">
+                <h3>各维度得分</h3>
+                <div class="dimensions-grid" id="dimensionsGrid"></div>
+            </div>
+            
+            <div class="interpretation-card">
+                <h3>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <line x1="12" y1="16" x2="12" y2="12"/>
+                        <line x1="12" y1="8" x2="12.01" y2="8"/>
+                    </svg>
+                    结果说明
+                </h3>
+                <p><strong>评分标准：</strong>1分=没有，5分=很严重</p>
+                <ul>
+                    <li><strong>1-2分</strong>：处于正常范围</li>
+                    <li><strong>2-3分</strong>：轻度心理困扰</li>
+                    <li><strong>3-4分</strong>：中度心理困扰，建议专业咨询</li>
+                    <li><strong>4分以上</strong>：较严重心理困扰，强烈建议专业帮助</li>
+                </ul>
+            </div>
+            
+            <div class="interpretation-card" style="background: linear-gradient(135deg, rgba(251, 191, 36, 0.1), rgba(249, 115, 22, 0.1));">
+                <h3>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2">
+                        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+                        <line x1="12" y1="9" x2="12" y2="13"/>
+                        <line x1="12" y1="17" x2="12.01" y2="17"/>
+                    </svg>
+                    重要提示
+                </h3>
+                <p>此测评结果仅供参考，不能替代专业心理咨询或医学诊断。如您感到心理困扰，建议寻求专业心理健康服务的帮助。</p>
+            </div>
+            
+            <div class="result-actions">
+                <button class="btn btn-primary" onclick="startAssessment()">重新测评</button>
+                <button class="btn btn-secondary" onclick="showHome()">返回首页</button>
+            </div>
+            
+            <div class="history-section" id="historySection" style="display: none;">
+                <h3>历史测评记录</h3>
+                <div id="historyList"></div>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        const API_URL = window.location.protocol + '//' + window.location.hostname + ':3000/api';
+        let token = localStorage.getItem('token');
+        let isLoginMode = true;
+        let answers = new Array(90).fill(null);
+        let currentQuestion = 0;
+        const itemsPerPage = 5;
+
+        const optionLabels = ["没有", "很轻", "中等", "偏重", "严重"];
+
+        const dimensions = [
+            { name: "躯体化", icon: "🤕", start: 0, end: 9 },
+            { name: "强迫症状", icon: "🔄", start: 10, end: 19 },
+            { name: "人际关系", icon: "👥", start: 20, end: 29 },
+            { name: "抑郁", icon: "😔", start: 30, end: 39 },
+            { name: "焦虑", icon: "😰", start: 40, end: 49 },
+            { name: "敌对", icon: "😠", start: 50, end: 59 },
+            { name: "恐怖", icon: "😨", start: 60, end: 69 },
+            { name: "偏执", icon: "🤔", start: 70, end: 79 },
+            { name: "精神病性", icon: "🌀", start: 80, end: 89 }
+        ];
+
+        const questions = [
+            "1. 头痛", "2. 神经过敏或感觉纷乱", "3. 头脑中有不必要的想法", "4. 头昏或昏倒", "5. 对异性的兴趣减退",
+            "6. 对旁人责备求全", "7. 感到别人能控制您的思想", "8. 责备自己", "9. 腰痛", "10. 感到难以完成任务",
+            "11. 感到害怕", "12. 心跳加快", "13. 心中不踏实", "14. 感到紧张或容易紧张", "15. 感到手或脚发软",
+            "16. 感到自己的精力下降", "17. 想结束自己的生命", "18. 听到别人听不到的声音", "19. 发抖", "20. 感到大多数人都不可信任",
+            "21. 食欲减退", "22. 容易哭泣", "23. 同异性相处时感到害羞不自在", "24. 感到受骗", "25. 经常与人发生争吵",
+            "26. 单独一人时神经很紧张", "27. 别人对您的成绩没有作出恰当评价", "28. 感到孤单", "29. 感到苦闷", "30. 过分担忧",
+            "31. 对事物不感兴趣", "32. 感到前途没有希望", "33. 感到恐慌", "34. 感到坐立不安", "35. 想死或想伤害自己",
+            "36. 经常与人发生争吵", "37. 自己不能控制地大发脾气", "38. 怕单独出门", "39. 经常责备自己", "40. 感到孤独",
+            "41. 感到忧虑", "42. 感到紧张", "43. 感到某些器官很衰弱", "44. 感到被监视", "45. 不能集中注意",
+            "46. 感到身体的某一部分软弱无力", "47. 感到紧张", "48. 感到熟悉的东西变陌生", "49. 感到要很快把事情做完", "50. 感到虚弱",
+            "51. 感到别人对您不友好", "52. 感到比不上他人", "53. 罪恶感", "54. 感到有什么东西在阻止您做事", "55. 感到熟悉的东西已不熟悉",
+            "56. 感到想打人或伤害他人", "57. 睡得不稳不深", "58. 有想摔东西的冲动", "59. 有想死的念头", "60. 感到自己许多方面表现都不好",
+            "61. 与人相处时感到不自在", "62. 感到大多数事都很困难", "63. 感到恐惧", "64. 感到公共场合进食很不舒服", "65. 感到与人疏远",
+            "66. 感到没有希望", "67. 感到做事困难", "68. 感到恶心或腹部不适", "69. 感到胸闷", "70. 感到没有人理解您",
+            "71. 感到对任何事都没兴趣", "72. 感到大多数人都不理解您", "73. 感到在人际关系中是个多余的人", "74. 感到想骂人", "75. 感到烦躁",
+            "76. 感到生活没意思", "77. 感到大部分时间里一个人度过", "78. 感到空虚", "79. 感到没有人关心您", "80. 感到前途没有希望",
+            "81. 感到生活空虚", "82. 感到不自在", "83. 感到有人控制您的思想", "84. 感到困难无法克服", "85. 感到孤独",
+            "86. 感到绝望", "87. 感到别人对您不尊重", "88. 感到神经紧张", "89. 感到生活负担重", "90. 感到记忆力下降"
+        ];
+
+        // 页面切换
+        function showSection(section) {
+            document.getElementById('homeSection').style.display = section === 'home' ? 'block' : 'none';
+            document.getElementById('featuresSection').style.display = section === 'features' ? 'block' : 'none';
+            document.getElementById('authSection').style.display = section === 'auth' ? 'block' : 'none';
+            document.getElementById('assessmentSection').style.display = section === 'assessment' ? 'block' : 'none';
+            document.getElementById('resultSection').style.display = section === 'result' ? 'block' : 'none';
+            window.scrollTo(0, 0);
+        }
+
+        function showHome() {
+            showSection('home');
+            updateAuthUI();
+        }
+
+        function showFeatures() {
+            showSection('features');
+        }
+
+        function showAuth() {
+            showSection('auth');
+            updateAuthUI();
+        }
+
+        function goHome() {
+            showHome();
+        }
+
+        // 更新登录状态UI
+        function updateAuthUI() {
+            const authLink = document.getElementById('authLink');
+            const logoutBtn = document.getElementById('logoutBtn');
+            
+            if (token) {
+                authLink.textContent = '历史记录';
+                logoutBtn.style.display = 'block';
+            } else {
+                authLink.textContent = '登录';
+                logoutBtn.style.display = 'none';
+            }
+        }
+
+        // 切换登录/注册
+        function toggleAuthMode() {
+            isLoginMode = !isLoginMode;
+            document.getElementById('authTitle').textContent = isLoginMode ? '登录' : '注册';
+            document.getElementById('authSubtitle').textContent = isLoginMode ? '使用您的账号' : '创建新账号';
+            document.getElementById('authSubmitBtn').textContent = isLoginMode ? '登录' : '注册';
+            document.getElementById('authSwitchText').textContent = isLoginMode ? '还没有账号？' : '已有账号？';
+            document.getElementById('authSwitchLink').textContent = isLoginMode ? '立即注册' : '立即登录';
+            document.getElementById('emailGroup').style.display = isLoginMode ? 'none' : 'block';
+            document.getElementById('passwordLabel').textContent = isLoginMode ? '密码' : '设置密码';
+            
+            document.getElementById('authMessage').style.display = 'none';
+            document.getElementById('authSuccess').style.display = 'none';
+        }
+
+        // 处理登录/注册
+        async function handleAuth(e) {
+            e.preventDefault();
+            const username = document.getElementById('authUsername').value;
+            const password = document.getElementById('authPassword').value;
+            const email = document.getElementById('authEmail').value;
+            const messageEl = document.getElementById('authMessage');
+            const successEl = document.getElementById('authSuccess');
+            
+            messageEl.style.display = 'none';
+            successEl.style.display = 'none';
+            
+            const endpoint = isLoginMode ? '/login' : '/register';
+            const body = { username, password };
+            if (!isLoginMode && email) body.email = email;
+            
+            try {
+                const res = await fetch(`${API_URL}${endpoint}`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                
+                const data = await res.json();
+                
+                if (!res.ok) {
+                    throw new Error(data.error);
+                }
+                
+                if (isLoginMode) {
+                    token = data.token;
+                    localStorage.setItem('token', token);
+                    localStorage.setItem('username', data.username);
+                    successEl.textContent = '登录成功！';
+                    successEl.style.display = 'block';
+                    setTimeout(() => {
+                        showHome();
+                        loadHistory();
+                    }, 1000);
+                } else {
+                    successEl.textContent = '注册成功！请登录';
+                    successEl.style.display = 'block';
+                    setTimeout(() => {
+                        isLoginMode = true;
+                        toggleAuthMode();
+                    }, 1500);
+                }
+            } catch (e) {
+                messageEl.textContent = e.message;
+                messageEl.style.display = 'block';
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('username');
+            token = null;
+            showHome();
+        }
+
+        // 测评功能
+        function startAssessment() {
+            answers = new Array(90).fill(null);
+            currentQuestion = 0;
+            showSection('assessment');
+            renderQuestions();
+        }
+
+        function renderQuestions() {
+            const container = document.getElementById('questionsContainer');
+            const start = currentQuestion;
+            const end = Math.min(start + itemsPerPage, 90);
+            
+            let html = `<div class="question-group">`;
+            for (let i = start; i < end; i++) {
+                html += `
+                    <div class="question-item" data-index="${i}">
+                        <div class="question-header">
+                            <div class="question-number">${i + 1}</div>
+                            <div class="question-text">${questions[i]}</div>
+                        </div>
+                        <div class="options-grid">
+                            ${[1,2,3,4,5].map(v => `
+                                <div class="option-btn ${answers[i] === v ? 'selected' : ''}" 
+                                     onclick="selectOption(${i}, ${v})">
+                                    <div class="option-label">${optionLabels[v-1]}</div>
+                                    <div class="option-desc">${v}分</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+            html += `</div>`;
+            container.innerHTML = html;
+            
+            updateProgress();
+            updateNavButtons();
+        }
+
+        function selectOption(questionIndex, value) {
+            answers[questionIndex] = value;
+            const item = document.querySelector(`[data-index="${questionIndex}"]`);
+            item.querySelectorAll('.option-btn').forEach((btn, idx) => {
+                btn.classList.toggle('selected', idx + 1 === value);
+            });
+        }
+
+        function updateProgress() {
+            const answered = answers.filter(a => a !== null).length;
+            const percent = (answered / 90 * 100).toFixed(0);
+            document.getElementById('progressPercent').textContent = percent + '%';
+            document.getElementById('progressFill').style.width = percent + '%';
+        }
+
+        function updateNavButtons() {
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+            const isLastPage = currentQuestion + itemsPerPage >= 90;
+            const nextBtn = document.getElementById('nextBtn');
+            
+            if (isLastPage) {
+                nextBtn.textContent = answers.every(a => a !== null) ? '查看结果' : '下一组';
+            } else {
+                nextBtn.textContent = '下一组';
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 0) {
+                currentQuestion -= itemsPerPage;
+                renderQuestions();
+            }
+        }
+
+        async function nextQuestion() {
+            const start = currentQuestion;
+            const end = Math.min(start + itemsPerPage, 90);
+            const allAnsweredInPage = answers.slice(start, end).every(a => a !== null);
+            const isLastPage = end >= 90;
+            
+            if (!allAnsweredInPage && !isLastPage) {
+                alert('请完成当前页面的所有题目');
+                return;
+            }
+            
+            if (isLastPage) {
+                if (answers.some(a => a === null)) {
+                    alert('请完成所有题目');
+                    return;
+                }
+                await showResults();
+            } else {
+                currentQuestion += itemsPerPage;
+                renderQuestions();
+            }
+        }
+
+        async function showResults() {
+            const totalScore = answers.reduce((sum, score) => sum + score, 0);
+            const averageScore = (totalScore / 90).toFixed(2);
+            
+            const dimensionsData = dimensions.map(dim => {
+                const dimScore = answers.slice(dim.start, dim.end + 1).reduce((sum, s) => sum + s, 0);
+                return {
+                    name: dim.name,
+                    icon: dim.icon,
+                    score: (dimScore / 10).toFixed(1)
+                };
+            });
+            
+            // 保存结果
+            if (token) {
+                try {
+                    await fetch(`${API_URL}/results`, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
+                        body: JSON.stringify({ totalScore, averageScore, dimensions: dimensionsData, answers })
+                    });
+                } catch (e) {
+                    console.error('保存失败:', e);
+                }
+            }
+            
+            showSection('result');
+            document.getElementById('totalScore').textContent = averageScore;
+            
+            let level;
+            if (averageScore < 2) level = '正常范围';
+            else if (averageScore < 3) level = '轻度心理困扰';
+            else if (averageScore < 4) level = '中度心理困扰';
+            else level = '较严重心理困扰';
+            
+            document.getElementById('scoreLevel').textContent = level;
+            
+            const grid = document.getElementById('dimensionsGrid');
+            grid.innerHTML = dimensionsData.map(dim => {
+                let color = '#22c55e';
+                if (dim.score >= 2.5) color = '#fbbf24';
+                if (dim.score >= 3.5) color = '#f97316';
+                if (dim.score >= 4) color = '#ef4444';
+                
+                return `
+                    <div class="dimension-item">
+                        <div class="dimension-icon">${dim.icon}</div>
+                        <div class="dimension-name">${dim.name}</div>
+                        <div class="dimension-score" style="color: ${color}">${dim.score}</div>
+                    </div>
+                `;
+            }).join('');
+            
+            if (token) loadHistory();
+        }
+
+        async function loadHistory() {
+            try {
+                const res = await fetch(`${API_URL}/results`, {
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                const results = await res.json();
+                
+                const historySection = document.getElementById('historySection');
+                const historyList = document.getElementById('historyList');
+                
+                if (results.length > 0) {
+                    historySection.style.display = 'block';
+                    historyList.innerHTML = results.slice(0, 5).map(r => {
+                        const score = parseFloat(r.average_score);
+                        let scoreClass = 'score-normal';
+                        if (score >= 2) scoreClass = 'score-mild';
+                        if (score >= 3) scoreClass = 'score-moderate';
+                        if (score >= 4) scoreClass = 'score-severe';
+                        
+                        return `
+                            <div class="history-item">
+                                <span class="history-date">${new Date(r.completed_at).toLocaleString('zh-CN')}</span>
+                                <span class="history-score ${scoreClass}">${score.toFixed(2)} 分</span>
+                            </div>
+                        `;
+                    }).join('');
+                }
+            } catch (e) {
+                console.error('加载历史失败:', e);
+            }
+        }
+
+        // 初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            updateAuthUI();
+        });
+    </script>
+</body>
+</html>
