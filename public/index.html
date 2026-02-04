@@ -762,14 +762,21 @@
             <p class="hero-subtitle">症状自评量表</p>
             <p class="hero-desc">国际通用的专业心理健康测评工具，从9个维度全面评估您的心理状态。</p>
             <div class="hero-cta">
-                <button class="btn btn-primary" onclick="startAssessment()">
+                <button class="btn btn-primary" onclick="startAssessment()" style="padding: 16px 48px; font-size: 20px;">
                     开始测评
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </button>
-                <button class="btn btn-secondary" onclick="showAuth()">
-                    登录管理记录
+            </div>
+            
+            <!-- 登录注册按钮 -->
+            <div style="margin-top: 40px; display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+                <button class="btn btn-secondary" onclick="showAuth()" style="font-size: 18px; padding: 12px 40px;">
+                    登录
+                </button>
+                <button class="btn btn-primary" onclick="showAuth()" style="font-size: 18px; padding: 12px 40px;">
+                    注册
                 </button>
             </div>
         </section>
